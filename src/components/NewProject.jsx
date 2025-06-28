@@ -1,7 +1,7 @@
 import { useRef } from "react"
 import Input from "./Inputs"
 
-export default function NewProject() {
+export default function NewProject({onAdd}) {
     const title = useRef();
     const description = useRef();
     const dueDate = useRef();
@@ -12,6 +12,13 @@ export default function NewProject() {
         const enterdDueDate = dueDate.current.value;
 
     }
+
+    onAdd({
+        title:enteredTitle,
+        description: enteredDescription,
+        dueDate: enterdDueDate
+
+    });
 
     return <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">

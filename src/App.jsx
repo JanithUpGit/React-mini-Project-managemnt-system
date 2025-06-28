@@ -20,6 +20,19 @@ function App() {
     });
   }
 
+  function handleAddProject(projectData){
+    setProjectState(prevState => {
+      const NewProject = {
+        ...projectData,
+        id: Math.random()
+      };
+      return{
+        ...prevState,
+        projects: [...prevState.projects,newProject]
+      }
+    })
+  }
+
   let content;
   if(projectsState.selectedProjectId === null){
     content = <NewProject/>
