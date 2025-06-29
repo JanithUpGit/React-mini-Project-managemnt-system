@@ -2,6 +2,7 @@ import { useState } from "react";
 import NewProject from "./components/NewProject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import ProjectsSidebar from "./components/ProjectsSidebar";
+import SelectedProject from "./components/SelectedProject";
 
 function App() {
   const [projectsState, setProjectState] = useState({
@@ -9,6 +10,17 @@ function App() {
     selectedProjectId: undefined,
     projects: []
   });
+
+  function handleSelectProject(id) {
+    setProjectState(prevState => {
+      return {
+        ...prevState,
+        selectedProjectId: id,
+
+      };
+    });
+
+  }
 
   function handleStartedAddProject() {
     setProjectState(prevState => {
@@ -35,8 +47,8 @@ function App() {
     })
   }
 
-  function handleCancelAddProject(){
-     setProjectState((prevState) => {
+  function handleCancelAddProject() {
+    setProjectState((prevState) => {
       return {
         ...prevState,
         selectedProjectId: undefined,
@@ -45,9 +57,23 @@ function App() {
     });
   }
 
+  function handleDeleteProject() {
+    setProjectState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects:prevState.projects.filter(
+          (project) => project.id !== prevState.selectedProjectId)
+
+      };
+    });
+
+  }
+
   console.log(projectsState);
 
-  let content;
+  const selectedProject = projectsState.projects.find((project) => project.id === projectsState.selectedProjectId);
+  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject}/>;
   if (projectsState.selectedProjectId === null) {
     content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />
   } else if (projectsState.selectedProjectId === undefined) {
@@ -60,6 +86,8 @@ function App() {
         <ProjectsSidebar
           onStartAddProject={handleStartedAddProject}
           projects={projectsState.projects}
+          onSelectProject={handleSelectProject}
+
         />
         {content}
       </main>
