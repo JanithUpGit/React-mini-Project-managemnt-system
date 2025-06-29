@@ -1,7 +1,9 @@
 import { useRef } from "react"
 import Input from "./Inputs"
+import Modal from "./Modal";
 
 export default function NewProject({onAdd}) {
+    const modal =useRef();
     const title = useRef();
     const description = useRef();
     const dueDate = useRef();
@@ -10,6 +12,11 @@ export default function NewProject({onAdd}) {
         const enteredTitle = title.current.value;
         const enteredDescription = description.current.value;
         const enterdDueDate = dueDate.current.value;
+
+        if (!enteredTitle.trim() || !enteredDescription.trim() || !enterdDueDate.trim()){
+            modal.current.open();
+            return;
+        }
 
         onAdd({
         title:enteredTitle,
@@ -22,7 +29,14 @@ export default function NewProject({onAdd}) {
     }
 
     
-    return <div className="w-[35rem] mt-16">
+    return <>
+    
+    <Modal ref={modal}>
+        <h2>Invalid Input</h2>
+        <p>Oops ... looks like forgot to enter a value.</p>
+        <p>Pleale make sure provide a valid value for every input field.</p>
+    </Modal>
+    <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">
             <li>
                 <button className="text-stone-800 hover:text-stone-950">Cancel</button>
@@ -41,4 +55,5 @@ export default function NewProject({onAdd}) {
             <Input type="date" ref={dueDate} label="Due Date" />
         </div>
     </div>
+    </>
 }
